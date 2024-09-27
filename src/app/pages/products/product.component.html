@@ -1,0 +1,33 @@
+<div class="container mx-auto p-6">
+  <h1 class="text-3xl font-bold mb-6">Products</h1>
+
+  <div *ngIf="loading$ | async; else productList">
+    <div class="flex justify-center">
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #productList>
+    <!-- Loop through categories using async pipe -->
+    <div *ngFor="let category of (groupedProducts$ | async) | keyvalue">
+      <h2 class="text-2xl font-bold mt-6">{{ category.key }}</h2>
+
+      <!-- Product Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
+        <div
+          *ngFor="let product of category.value"
+          class="bg-white rounded-lg shadow-lg p-4 transition-transform transform hover:scale-105 hover:shadow-2xl duration-300"
+        >
+          <app-product-item
+            [product]="product"
+          ></app-product-item>
+        </div>
+      </div>
+    </div>
+
+    <app-product-view
+    ></app-product-view>
+  </ng-template>
+</div>

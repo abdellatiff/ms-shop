@@ -1,0 +1,122 @@
+<nav class="bg-gradient-to-r from-indigo-600 to-purple-600 shadow-lg">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      <div class="flex items-center">
+        <!-- App Name -->
+        <div class="shrink-0 flex items-center">
+          <a href="/" class="text-3xl font-extrabold tracking-tight text-white">
+            Ecom-ms
+          </a>
+        </div>
+
+        <!-- Navbar Links -->
+        <div class="hidden md:ml-6 md:flex md:space-x-8">
+          <a
+            *ngIf="(isAuthenticated$ | async) && (isAdmin$ | async)"
+            routerLink="/dashboard/customer"
+            class="nav-link inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-200 hover:text-white"
+          >
+            Customer
+          </a>
+          <a
+           *ngIf="isAuthenticated$ | async"
+            routerLink="/dashboard/products"
+            class="nav-link inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-200 hover:text-white"
+          >
+            Products
+          </a>
+        </div>
+      </div>
+
+      <!-- Right side buttons -->
+      <div class="hidden md:flex md:items-center space-x-6">
+        <!-- Cart Icon -->
+        <div class="relative group">
+          <svg
+            class="h-8 w-8 text-gray-100 hover:text-yellow-300 cursor-pointer"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M3 3h2l.4 2M7 13h10l3-8H6.4M7 13L6 9h13l1.5 4.5M7 13l-3 7h13l-3-7H7z"
+            />
+          </svg>
+          <span
+            class="absolute -top-1 -right-3 bg-red-600 text-white text-xs w-6 h-6 rounded-full flex items-center justify-center"
+            >{{ itemCount$ | async }}</span
+          >
+
+          <!-- Cart dropdown (with high z-index) -->
+          <div
+            class="absolute right-0 mt-2 w-64 bg-white text-gray-800 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition duration-300 dropdown-menu"
+            style="z-index: 50"
+          >
+            <div *ngIf="(cartItems$ | async)?.length === 0" class="p-4 text-center">
+              No items in cart
+            </div>
+            <div
+              *ngFor="let item of cartItems$ | async"
+              class="p-4 border-b border-gray-200"
+            >
+              <div class="flex justify-between">
+                <div>
+                  <p class="font-bold">{{ item.product?.name }}</p>
+                  <p class="text-sm text-gray-500">Qty: {{ item.quantity }}</p>
+                </div>
+                <button
+                  (click)="removeCartItem(item.product?.id)"
+                  class="text-red-600 hover:text-red-800"
+                >
+                  Remove
+                </button>
+              </div>
+            </div>
+            <div class="p-4 text-right">
+              <button
+                class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+              >
+                Checkout
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Account Dropdown -->
+        <div class="relative group">
+          <button
+            class="bg-indigo-800 text-white px-4 py-2 rounded-full shadow-lg hover:bg-indigo-900"
+          >
+            Account
+          </button>
+
+          <!-- Dropdown menu -->
+          <div
+            class="absolute left-0 mt-2 w-48 bg-white text-gray-800 rounded shadow-lg opacity-0 group-hover:opacity-100 transition duration-300"
+          >
+            <ng-container *ngIf="isAuthenticated$ | async; else loginTemplate">
+              <a
+                (click)="logout()"
+                class="block px-4 py-2 text-sm text-gray-700 hover:bg-red-600 hover:text-white"
+              >
+                Logout
+              </a>
+            </ng-container>
+            <ng-template #loginTemplate>
+              <a
+                (click)="login()"
+                class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-600 hover:text-white"
+              >
+                Login
+              </a>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

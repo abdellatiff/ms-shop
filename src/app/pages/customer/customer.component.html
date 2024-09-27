@@ -1,0 +1,55 @@
+<!-- Main Content -->
+<div class="py-10">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+      <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+        <div class="p-6">
+          <div class="container mx-auto p-4">
+            <h1 class="text-2xl font-bold mb-4">Customer Management</h1>
+          
+            <!-- Table -->
+            <div class="overflow-x-auto">
+              <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+                <thead class="bg-gray-800 text-white">
+                  <tr>
+                    <th class="py-2 px-4 text-left">First Name</th>
+                    <th class="py-2 px-4 text-left">Last Name</th>
+                    <th class="py-2 px-4 text-left">Email</th>
+                    <th class="py-2 px-4 text-left">Address</th>
+                    <th class="py-2 px-4 text-left">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let customer of customers$|async" class="border-b hover:bg-gray-50">
+                    <td class="py-2 px-4">{{ customer.firstName }}</td>
+                    <td class="py-2 px-4">{{ customer.lastName }}</td>
+                    <td class="py-2 px-4">{{ customer.email }}</td>
+                    <td class="py-2 px-4">{{ customer.address }}</td>
+                    <td class="py-2 px-4">
+                      <button class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600" (click)="onViewCustomer(customer)">View</button>
+                      <button class="bg-red-500 text-white px-3 py-1 ml-2 rounded hover:bg-red-600" (click)="onDeleteCustomer(customer.id)">Delete</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          
+            <!-- Modal for viewing customer details -->
+            <div *ngIf="displayDialog" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
+              <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+                <h2 class="text-xl font-semibold mb-4">Customer Details</h2>
+                <div *ngIf="selectedCustomer$ | async">
+                  <p><strong>First Name:</strong> {{ (selectedCustomer$ | async)?.firstName }}</p>
+                  <p><strong>Last Name:</strong> {{ (selectedCustomer$ | async)?.lastName }}</p>
+                  <p><strong>Email:</strong> {{ (selectedCustomer$ | async)?.email }}</p>
+                  <p><strong>Address:</strong> {{ (selectedCustomer$ | async)?.address }}</p>
+                </div>
+                <button class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 mt-4" (click)="closeDialog()">Close</button>
+              </div>
+            </div>
+          </div>
+          
+          
+        </div>
+      </div>
+    </div>
+</div>
